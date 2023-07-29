@@ -1,6 +1,6 @@
 package lk.ijse.gdse63.shaili.assignment1.Entity;
 
-public class Item {
+public class Item implements SuperEntity {
     private String id;
 
     private String name;

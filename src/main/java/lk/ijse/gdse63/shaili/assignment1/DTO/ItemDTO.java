@@ -1,6 +1,6 @@
 package lk.ijse.gdse63.shaili.assignment1.DTO;
 
-public class ItemDTO {
+public class ItemDTO implements SuperDTO {
     private String id;
 
     private String name;
