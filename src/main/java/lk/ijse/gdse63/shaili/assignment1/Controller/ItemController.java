@@ -1,62 +1,74 @@
 package lk.ijse.gdse63.shaili.assignment1.Controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
+import com.google.gson.Gson;
 import lk.ijse.gdse63.shaili.assignment1.DTO.ItemDTO;
-import lk.ijse.gdse63.shaili.assignment1.Dao.custom.impl.ItemDAOImpl;
-import lk.ijse.gdse63.shaili.assignment1.Response.Response;
-import lk.ijse.gdse63.shaili.assignment1.Util.GSONConfiguration;
-import lk.ijse.gdse63.shaili.assignment1.Util.ResponseConfiguration;
-import lk.ijse.gdse63.shaili.assignment1.service.Custom.impl.ItemServiceImpl;
+import lk.ijse.gdse63.shaili.assignment1.service.Custom.ItemService;
 import lk.ijse.gdse63.shaili.assignment1.service.util.ServiceFactory;
 import lk.ijse.gdse63.shaili.assignment1.service.util.ServiceTypes;
 
-@WebServlet(urlPatterns = {"/item-Controller"})
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
 public class ItemController extends HttpServlet {
+    ItemService service = ServiceFactory.getService(ServiceTypes.ITEM_SERVICE);
+
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ItemServiceImpl service = ServiceFactory.getService(ServiceTypes.ITEM_SERVICE);
-        System.out.println("done1");
-        if (req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")) {
-            resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+        try {
+            ItemDTO item = getItem(req);
+            System.out.println(item);
+            boolean add = service.add(item);
+            System.out.println(item.getId());
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
-        Jsonb jsonb = JsonbBuilder.create();
-        ItemDTO item = jsonb.fromJson(req.getReader(), ItemDTO.class);
-        System.out.println(item);
-        if (service.add(item)) {
-            /*Getting the error msg + status to an object.*/
-            Response response = ResponseConfiguration.getInstance().getResponse();
-            response.setStatus(true);
-            /*Converting it to a JSON object and sending as the response.*/
-//            resp.getWriter().println(GSONConfiguration.getInstance().getGSON().toJson(response));
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-            //the created json is sent to frontend
-            resp.setContentType("application/json");
-            jsonb.toJson(item,resp.getWriter());
-        } else {
-            /*Getting the error msg + status to an object.*/
-            Response response = ResponseConfiguration.getInstance().getResponse();
-            response.setResponseMessage(ItemDAOImpl.getError_Info());
-            response.setStatus(false);
-            /*Converting it to a JSON object and sending as the response.*/
-//            resp.getWriter().println(GSONConfiguration.getInstance().getGSON().toJson(response));
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-            //the created json is sent to frontend
-            resp.setContentType("application/json");
-            jsonb.toJson(item,resp.getWriter());
-        }
-
-
+        resp.setStatus(HttpServletResponse.SC_OK);
 
     }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp)  {
+        System.out.println("Do Option Called");
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("Do Delete called");
+        ItemDTO itemDTO = null;
+        try {
+            itemDTO = getItem(req);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(itemDTO);
+        boolean delete = service.delete(itemDTO.getId());
+        System.out.println(delete);
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    public ItemDTO getItem(HttpServletRequest req) throws IOException {
+        BufferedReader reader = req.getReader();
+        StringBuilder builder = new StringBuilder();
+        String data;
+        while ((data=reader.readLine())!=null){
+            builder.append(data);
+        }
+        Gson gson = new Gson();
+        return gson.fromJson(builder.toString(),ItemDTO.class);
+    }
+
+
+
 
 }

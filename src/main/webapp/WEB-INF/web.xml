@@ -3,4 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+    <servlet>
+        <servlet-name>item</servlet-name>
+        <servlet-class>lk.ijse.gdse63.shaili.assignment1.Controller.ItemController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>item</servlet-name>
+        <url-pattern>/itemController</url-pattern>
+    </servlet-mapping>
 </web-app>

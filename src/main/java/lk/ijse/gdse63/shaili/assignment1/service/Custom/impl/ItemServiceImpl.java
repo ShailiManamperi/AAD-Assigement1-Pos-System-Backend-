@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ItemServiceImpl implements ItemService {
-
+    ItemDAO itemDAO;
+    public ItemServiceImpl() {
+        itemDAO = DAOFactory.getDAO(DAOTypes.ITEM_DAO);
+    }
 
     @Override
     public boolean add(ItemDTO itemDTO) {
@@ -31,12 +34,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public boolean update(ItemDTO itemDTO) {
-        return false;
+        ItemDAO itemDAO = DAOFactory.getDAO(DAOTypes.ITEM_DAO);
+        boolean update = false;
+        update = itemDAO.update(Converter.toItem(itemDTO));
+        return update;
     }
 
     @Override
     public boolean delete(String s) {
-        return false;
+        boolean delete = itemDAO.delete(s);
+        return delete;
     }
 
     @Override
