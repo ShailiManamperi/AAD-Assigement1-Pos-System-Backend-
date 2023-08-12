@@ -16,12 +16,11 @@ import java.util.Optional;
 public class ItemServiceImpl implements ItemService {
     ItemDAO itemDAO;
     public ItemServiceImpl() {
-        itemDAO = DAOFactory.getDAO(DAOTypes.ITEM_DAO);
+        itemDAO = DAOFactory.getDAO(DAOTypes.CUSTOMER_DAO);
     }
 
     @Override
     public boolean add(ItemDTO itemDTO) {
-        ItemDAO itemDAO = DAOFactory.getDAO(DAOTypes.ITEM_DAO);
         boolean add = false;
         try {
             add = itemDAO.add(Converter.toItem(itemDTO));
@@ -34,7 +33,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public boolean update(ItemDTO itemDTO) {
-        ItemDAO itemDAO = DAOFactory.getDAO(DAOTypes.ITEM_DAO);
         boolean update = false;
         update = itemDAO.update(Converter.toItem(itemDTO));
         return update;

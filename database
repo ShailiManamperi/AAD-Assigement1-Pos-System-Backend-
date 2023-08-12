@@ -1,0 +1,14 @@
+Create database if not exists aadassigment1;
+use aadassigment1;
+create table if not exists item(
+    id VARCHAR(20),
+    name VARCHAR(50),
+    qty INT,
+    price DOUBLE
+);
+create table if not exists customer(
+    C_id VARCHAR(20),
+    C_name VARCHAR(50),
+    address TEXT,
+    contact INT
+);

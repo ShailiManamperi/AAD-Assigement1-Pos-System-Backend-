@@ -27,14 +27,32 @@ public class ItemController extends HttpServlet {
             ItemDTO item = getItem(req);
             System.out.println(item);
             boolean add = service.add(item);
+            if (add){
+                resp.setStatus(HttpServletResponse.SC_OK);
+            }
             System.out.println(item.getId());
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        resp.setStatus(HttpServletResponse.SC_OK);
-
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp)  {
+        try{
+            ItemDTO itemDTO = getItem(req);
+            System.out.println(itemDTO);
+            boolean update = service.update(itemDTO);
+            System.out.println(update);
+            if (update){
+                resp.setStatus(HttpServletResponse.SC_OK);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp)  {
@@ -54,7 +72,9 @@ public class ItemController extends HttpServlet {
         System.out.println(itemDTO);
         boolean delete = service.delete(itemDTO.getId());
         System.out.println(delete);
-        resp.setStatus(HttpServletResponse.SC_OK);
+        if (delete) {
+            resp.setStatus(HttpServletResponse.SC_OK);
+        }
     }
 
     public ItemDTO getItem(HttpServletRequest req) throws IOException {
