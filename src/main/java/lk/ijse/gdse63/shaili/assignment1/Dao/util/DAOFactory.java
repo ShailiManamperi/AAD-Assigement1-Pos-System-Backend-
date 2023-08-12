@@ -1,6 +1,7 @@
 package lk.ijse.gdse63.shaili.assignment1.Dao.util;
 
 
+import lk.ijse.gdse63.shaili.assignment1.Dao.custom.impl.CustomerDAOImpl;
 import lk.ijse.gdse63.shaili.assignment1.Dao.custom.impl.ItemDAOImpl;
 
 public class DAOFactory {
@@ -8,6 +9,8 @@ public class DAOFactory {
         switch (daoType) {
             case ITEM_DAO:
                 return (T) new ItemDAOImpl();
+            case CUSTOMER_DAO:
+                return (T) new CustomerDAOImpl();
 //            case ORDER_DAO:
 //                return (T) new OrderDAOIMPL();
             default:

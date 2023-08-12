@@ -1,13 +1,14 @@
 package lk.ijse.gdse63.shaili.assignment1.service.util;
 
 
+import lk.ijse.gdse63.shaili.assignment1.service.Custom.impl.CustomerServiceImpl;
 import lk.ijse.gdse63.shaili.assignment1.service.Custom.impl.ItemServiceImpl;
 
 public class ServiceFactory {
     public static <T> T getService(ServiceTypes serviceType) {
         switch (serviceType) {
-//            case CUSTOMER_SERVICE:
-//                return (T) new CustomerServiceIMPL();
+            case CUSTOMER_SERVICE:
+                return (T) new CustomerServiceImpl();
             case ITEM_SERVICE:
                 return (T) new ItemServiceImpl();
 //            case ORDER_SERVICE:
